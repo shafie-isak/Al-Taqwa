@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:al_taqwa/Screens/reminders/set_reminder_bottom_sheet.dart';
 import 'package:al_taqwa/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -26,6 +26,31 @@ class _AlarmsState extends State<Alarms> with SingleTickerProviderStateMixin {
     });
   }
 
+   void _showSetReminderBottomSheet(BuildContext context) async {
+    List<bool> initialDays = List.filled(7, false);
+    TimeOfDay initialTime = const TimeOfDay(hour: 5, minute: 0);
+
+    final result = await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+      builder: (context) => SetReminderBottomSheet(
+        initialTime: initialTime,
+        initialDays: initialDays,
+      ),
+    );
+
+    if (result != null) {
+      // Handle the result from the bottom sheet
+      print('Selected Days: ${result['days']}');
+      print('Selected Time: ${result['time'].format(context)}');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Skeletonizer(
@@ -36,8 +61,15 @@ class _AlarmsState extends State<Alarms> with SingleTickerProviderStateMixin {
           children: [
             Container(
               margin: const EdgeInsets.only(top: 15),
-              child: const Text("Daily dhikr reminder",
-                  style: TextStyle(color: Colors.grey)),
+              child:  Row(
+                children: [
+                  Expanded(
+                    child: Text("Alerms",
+                        style: TextStyle(color: Colors.grey)),
+                  ),
+                  IconButton(onPressed: () => _showSetReminderBottomSheet(context), icon: Icon(Icons.add, color: AppColors.primaryColor,))
+                ],
+              ),
             ),
             const Divider(),
             Card(
