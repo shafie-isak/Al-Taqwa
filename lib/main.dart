@@ -1,14 +1,13 @@
-import 'dart:async';
+
 import 'package:al_taqwa/Screens/reminders/Alarms.dart';
 import 'package:al_taqwa/Screens/reminders/todo.dart';
-import 'package:flutter/rendering.dart';
+import 'package:al_taqwa/Screens/tasbih/tasbih.dart';
+import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:al_taqwa/Screens/auth/signup.dart';
 import 'package:al_taqwa/Screens/home/home.dart';
 import 'package:al_taqwa/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 void main() {
@@ -26,9 +25,12 @@ class AlTaqwa extends StatefulWidget {
 }
 
 class _AlTaqwaState extends State<AlTaqwa> with SingleTickerProviderStateMixin {
+
   var _selectedIndex = 0;
 
-  final List<Widget> _screens = [const Home(), const Alarms(), const ToDo()];
+  final List<Widget> _screens = [const Home(), const Alarms(), const ToDo(), TasbihCounter(), const Home()];
+
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -36,47 +38,29 @@ class _AlTaqwaState extends State<AlTaqwa> with SingleTickerProviderStateMixin {
       backgroundColor: AppColors.whiteSmoke,
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
+        foregroundColor: AppColors.white,
         title: const Text("Al-Taqwa",
             style:
-                TextStyle(fontWeight: FontWeight.bold, color: AppColors.white)),
+                TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
         actions: [
           GestureDetector(
-            child: const Icon(SolarIconsOutline.infoSquare),
+            child: const Padding(
+              padding:  EdgeInsets.only(right: 12.0),
+              child:  Icon(FlutterIslamicIcons.sajadah),
+            ),
           )
         ],
       ),
-      drawer: Drawer(
-        shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(0)),
-        width: 250,
-        child: ListView(
-          children: const [],
-        ),
-      ),
+      
       body: _screens[_selectedIndex],
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: const FloatingActionButton.small(
-        onPressed: null,
-        backgroundColor: AppColors.primaryColor,
-        foregroundColor: AppColors.lightBlue,
-        shape: CircleBorder(
-          side: BorderSide(),
-        ),
-        child: Icon(
-          Icons.add,
-          size: 30,
-        ),
-      ),
-      bottomNavigationBar: Container(
-        // color: const Color.fromARGB(122, 195, 226, 252),
-        height: 75,
-        alignment: const Alignment(1, 1),
-        child: GNav(
-          backgroundColor: const Color.fromARGB(122, 195, 226, 252),
+
+      bottomNavigationBar: GNav(
+          backgroundColor: const Color.fromARGB(86, 195, 226, 252),
           tabBackgroundColor: AppColors.lightBlue,
           padding: const EdgeInsets.all(13),
           tabMargin: const EdgeInsets.all(8),
           selectedIndex: _selectedIndex,
-          iconSize: 20,
+          iconSize: 22,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           onTabChange: (index) {
             setState(() {
@@ -98,15 +82,15 @@ class _AlTaqwaState extends State<AlTaqwa> with SingleTickerProviderStateMixin {
               text: 'To-do',
             ),
             GButton(
-              icon: SolarIconsOutline.moonStars,
+              icon: FlutterIslamicIcons.tasbih3,
+              text: "Tasbih",
             ),
             GButton(
-              icon: SolarIconsBold.library,
-              text: "Adhkar",
+              icon: FlutterIslamicIcons.prayer,
+              text: "Duas",
             ),
           ],
         ),
-      ),
     );
   }
 }
