@@ -77,7 +77,10 @@ export const markAsCompleted = async (req, res) => {
             { completed: true },
             { new: true }
         );
-        if (!reminder) return res.status(404).json({ error: 'To-do not found' });
+
+        if (!reminder) { 
+            return res.status(404).json({ error: 'To-do not found' });
+        }
         res.status(200).json(reminder);
     } catch (err) {
         res.status(400).json({ error: err.message });
