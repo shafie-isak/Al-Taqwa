@@ -1,5 +1,7 @@
+import 'package:al_taqwa/Screens/auth/signin.dart';
 import 'package:al_taqwa/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -92,7 +94,7 @@ class MyDrawer extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton.icon(
               onPressed: () {
-                // Handle logout
+                Get.to(const LogIn());
               },
               icon: const Icon(Icons.logout),
               label: const Text('Log Out'),
