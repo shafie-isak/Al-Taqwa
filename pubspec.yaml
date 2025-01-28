@@ -42,6 +42,11 @@ dependencies:
   day_picker: ^2.3.0
   http: ^1.3.0
   flutter_islamic_icons: ^1.0.2
+  intl: ^0.18.0
+  location: ^7.0.1
+  flutter_local_notifications: ^18.0.1
+  dio: ^5.7.0
+  timezone: ^0.10.0
 
 dev_dependencies:
   flutter_test:
