@@ -1,3 +1,4 @@
+import 'package:al_taqwa/Screens/auth/signup.dart';
 import 'package:al_taqwa/Screens/home/drawer.dart';
 import 'package:al_taqwa/Screens/reminders/Alarms.dart';
 import 'package:al_taqwa/Screens/reminders/todo.dart';
@@ -25,12 +26,15 @@ class AlTaqwa extends StatefulWidget {
 }
 
 class _AlTaqwaState extends State<AlTaqwa> with SingleTickerProviderStateMixin {
-
   var _selectedIndex = 0;
 
-  final List<Widget> _screens = [const Home(), const Alarms(), const ToDo(), TasbihCounter(), const Home()];
-
- 
+  final List<Widget> _screens = [
+    const Home(),
+    const Alarms(),
+    const ToDo(),
+    TasbihCounter(),
+    const Home()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +45,7 @@ class _AlTaqwaState extends State<AlTaqwa> with SingleTickerProviderStateMixin {
       //   title: const Text("Al Taqwa", style: TextStyle(color: AppColors.lightBlue),),
       //   leading: const Icon(Icons.filter_list_rounded, color: AppColors.secondaryColor,),
       // ),
-      body: SignUp(),
-      
+      body: Alarms(),
     );
   }
 }
-
-
-
