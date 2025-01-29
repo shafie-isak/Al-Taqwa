@@ -1,10 +1,13 @@
 import 'package:al_taqwa/Screens/auth/signin.dart';
 import 'package:al_taqwa/colors.dart';
+import 'package:al_taqwa/controllers/UsersController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MyDrawer extends StatelessWidget {
-  const MyDrawer({super.key});
+  MyDrawer({super.key});
+
+  final UsersController controller = Get.put(UsersController());
 
   @override
   Widget build(BuildContext context) {
@@ -24,93 +27,92 @@ class MyDrawer extends StatelessWidget {
     }
 
     return Drawer(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              color: AppColors.primaryColor,
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      DrawerHeader(
+        decoration: const BoxDecoration(
+          color: AppColors.primaryColor,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const CircleAvatar(
+              radius: 30,
+              backgroundColor: AppColors.lightBlue,
+              child: Icon(
+                Icons.person,
+                size: 40,
+                color: AppColors.whiteSmoke,
+              ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CircleAvatar(
-                  radius: 30,
-                  backgroundColor: AppColors.lightBlue,
-                  child: Icon(
-                    Icons.person,
-                    size: 40,
-                    color: AppColors.whiteSmoke,
-                  ),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Shafie Isak',
-                  style: TextStyle(
+            const SizedBox(height: 10),
+
+            Obx(() => Text(
+                  controller.userName.value.isNotEmpty ? controller.userName.value : 'Guest User',
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
-                ),
-                Text(
-                  'shafieisak@gmail.com',
-                  style: TextStyle(
+                )),
+
+            Obx(() => Text(
+                  controller.userEmail.value.isNotEmpty ? controller.userEmail.value : 'guest@example.com',
+                  style: const TextStyle(
                     color: Colors.white70,
                     fontSize: 14,
                   ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: ListView(
-              children: [
-                buildDrawerItem(
-                  icon: Icons.palette_outlined,
-                  title: 'Themes',
-                  onTap: () {},
-                ),
-                buildDrawerItem(
-                  icon: Icons.info_outline,
-                  title: 'About',
-                  onTap: () {},
-                ),
-                buildDrawerItem(
-                  icon: Icons.help_outline,
-                  title: 'Help & Support',
-                  onTap: () {},
-                ),
-                buildDrawerItem(
-                  icon: Icons.feedback_outlined,
-                  title: 'Feedback',
-                  onTap: () {
-                    // Handle Feedback navigation
-                  },
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton.icon(
-              onPressed: () {
-                Get.to(const LogIn());
-              },
-              icon: const Icon(Icons.logout),
-              label: const Text('Log Out'),
-              style: ElevatedButton.styleFrom(
-                elevation: 0,
-                backgroundColor: AppColors.lightBlue,
-                foregroundColor: AppColors.primaryColor,
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-            ),
-          ),
-        ],
+                )),
+          ],
+        ),
       ),
-    );
+      Expanded(
+        child: ListView(
+          children: [
+            buildDrawerItem(
+              icon: Icons.palette_outlined,
+              title: 'Themes',
+              onTap: () {},
+            ),
+            buildDrawerItem(
+              icon: Icons.info_outline,
+              title: 'About',
+              onTap: () {},
+            ),
+            buildDrawerItem(
+              icon: Icons.help_outline,
+              title: 'Help & Support',
+              onTap: () {},
+            ),
+            buildDrawerItem(
+              icon: Icons.feedback_outlined,
+              title: 'Feedback',
+              onTap: () {},
+            ),
+          ],
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ElevatedButton.icon(
+          onPressed: controller.LogoutUser, // Call the Logout function
+          icon: const Icon(Icons.logout),
+          label: const Text('Log Out'),
+          style: ElevatedButton.styleFrom(
+            elevation: 0,
+            backgroundColor: AppColors.lightBlue,
+            foregroundColor: AppColors.primaryColor,
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        ),
+      ),
+    ],
+  ),
+);
+
   }
 }

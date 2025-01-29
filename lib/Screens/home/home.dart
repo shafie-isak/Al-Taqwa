@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:al_taqwa/colors.dart';
+import 'package:al_taqwa/controllers/UsersController.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -12,13 +13,12 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home>
-    with SingleTickerProviderStateMixin {
+class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
- bool _loading = true;
+  bool _loading = true;
 
-
+  final UsersController controller = Get.put(UsersController());
 
   @override
   void initState() {
@@ -48,18 +48,21 @@ class _HomeState extends State<Home>
                   fit: BoxFit.cover,
                 ),
               ),
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.only(left: 15),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Shafie Isak!",
-                        style: TextStyle(
+                    Obx(() => Text(
+                        controller.userName.value.isNotEmpty
+                            ? controller.userName.value
+                            : 'Guest User',
+                        style: const TextStyle(
                             color: AppColors.white,
                             fontSize: 20,
-                            fontWeight: FontWeight.bold)),
-                    Text("Have you dhikr today?",
+                            fontWeight: FontWeight.bold))),
+                    const Text("Have you dhikr today?",
                         style: TextStyle(color: AppColors.white, fontSize: 18)),
                   ],
                 ),
