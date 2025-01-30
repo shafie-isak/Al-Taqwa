@@ -7,6 +7,7 @@ import {
     deleteReminder,
     toggleToDo,
     markAsCompleted,
+    getToDos
 } from '../controllers/reminderController.js';
 
 const router = express.Router();
