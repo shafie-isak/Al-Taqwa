@@ -33,7 +33,7 @@ class _AlTaqwaState extends State<AlTaqwa> {
 
   final List<Widget> _screens = [
     const Home(),
-    const Alarms(),
+    Alarms(),
     const ToDo(),
     TasbihCounter(),
     // const Prayers()
@@ -65,7 +65,7 @@ class _AlTaqwaState extends State<AlTaqwa> {
           )
         ],
       ),
-      drawer: const MyDrawer(),
+      drawer: MyDrawer(),
       body: _screens[_selectedIndex],
       bottomNavigationBar: GNav(
         backgroundColor: const Color.fromARGB(86, 195, 226, 252),

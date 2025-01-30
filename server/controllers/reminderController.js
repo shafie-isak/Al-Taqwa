@@ -24,11 +24,10 @@ export const createReminder = async (req, res) => {
     }
 };
 
-
 // Get all reminders for a user
 export const getReminders = async (req, res) => {
     try {
-        const reminders = await Reminder.find({});
+        const reminders = await Reminder.find({ userId: req.user.id }); // Fetch reminders for the logged-in user
         res.status(200).json(reminders);
     } catch (err) {
         res.status(400).json({ error: err.message });
@@ -38,8 +37,8 @@ export const getReminders = async (req, res) => {
 export const updateReminder = async (req, res) => {
     try {
         const reminder = await Reminder.findOneAndUpdate(
-            { _id: req.params.id },
-            req.body, 
+            { _id: req.params.id, userId: req.user.id }, // Ensure the reminder belongs to the user
+            req.body,
             { new: true }
         );
         if (!reminder) return res.status(404).json({ error: 'Reminder not found' });
@@ -48,7 +47,6 @@ export const updateReminder = async (req, res) => {
         res.status(400).json({ error: err.message });
     }
 };
-
 
 // Delete a reminder
 export const deleteReminder = async (req, res) => {
@@ -93,7 +91,7 @@ export const toggleToDo = async (req, res) => {
         const todos = await Reminder.find({ isToDo: true });
         res.status(200).json(todos);
     } catch (err) {
-        res.status(400).json({ error: err.message });
+      res.status(400).json({ error: err.message });
     }
 };
 

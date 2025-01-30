@@ -13,12 +13,11 @@ import {
 const router = express.Router();
 
 // Routes
-router.post('/add', createReminder); 
-router.get('/getreminders', getReminders); 
-router.put('/update/:id',authMiddleware, updateReminder); 
-router.delete('/delete/:id', deleteReminder); 
-router.put('/toggle-todo/:id',authMiddleware, toggleToDo); 
-router.get("/get-todos", authMiddleware, getToDos);
-router.put('/toggle-complete/:id', markAsCompleted);
+router.post('/add', authMiddleware ,createReminder); 
+router.get('/getreminders', authMiddleware ,getReminders); 
+router.put('/update/:id', authMiddleware ,updateReminder); 
+router.delete('/delete/:id', authMiddleware ,deleteReminder); 
+router.put('/toggle-todo/:id', authMiddleware , toggleToDo); 
+router.put('/:id/mark-completed', authMiddleware, markAsCompleted);
 
 export default router;
