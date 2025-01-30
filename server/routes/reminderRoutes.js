@@ -5,18 +5,18 @@ import {
     getReminders,
     updateReminder,
     deleteReminder,
-    setAsToDo,
+    toggleToDo,
     markAsCompleted,
 } from '../controllers/reminderController.js';
 
 const router = express.Router();
 
 // Routes
-router.post('/', authMiddleware, createReminder); 
-router.get('/', authMiddleware, getReminders); 
-router.put('/:id', authMiddleware, updateReminder); 
-router.delete('/:id', authMiddleware, deleteReminder); 
-router.put('/:id/set-todo', authMiddleware, setAsToDo); 
+router.post('/add', authMiddleware ,createReminder); 
+router.get('/getreminders', authMiddleware ,getReminders); 
+router.put('/update/:id', authMiddleware ,updateReminder); 
+router.delete('/delete/:id', authMiddleware ,deleteReminder); 
+router.put('/toggle-todo/:id', authMiddleware , toggleToDo); 
 router.put('/:id/mark-completed', authMiddleware, markAsCompleted);
 
 export default router;

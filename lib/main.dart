@@ -33,7 +33,7 @@ class _AlTaqwaState extends State<AlTaqwa> {
 
   final List<Widget> _screens = [
     const Home(),
-    const Alarms(),
+    Alarms(),
     const ToDo(),
     TasbihCounter(),
     // const Prayers()
