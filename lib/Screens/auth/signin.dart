@@ -12,7 +12,7 @@ class LogIn extends StatefulWidget {
   State<LogIn> createState() => _LogInState();
 }
 
-class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
+class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin { 
   late AnimationController _animationController;
 
   bool _isObScureText = true;

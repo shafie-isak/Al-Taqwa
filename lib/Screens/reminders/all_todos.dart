@@ -1,51 +1,65 @@
-import 'package:al_taqwa/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:al_taqwa/colors.dart';
+import 'package:al_taqwa/controllers/todoController.dart';
 
-class AllTodo extends StatefulWidget {
-  const AllTodo({super.key});
+class AllTodo extends StatelessWidget {
+  final String filter;
+  final ToDoController todoController = Get.find();
 
-  @override
-  State<AllTodo> createState() => _AllTodoState();
-}
+  AllTodo({super.key, required this.filter});
 
-bool _isChecked = false;
-
-class _AllTodoState extends State<AllTodo> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ListView(
-        children: [
-          Card(
-            shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(5)),
-            color: AppColors.lightBlue,
-            elevation: 0,
-            child: ListTile(
-              leading: GestureDetector(
-                onTap: () =>{
-                  setState(() {
-                    _isChecked = !_isChecked;
-                  }),
-                },
-                child: Icon(_isChecked ? Icons.check_box : Icons.check_box_outline_blank, size: 35,color: AppColors.primaryColor,),
-              ),
-              title: const Text(
-                "Alarm 1",
-                style: TextStyle(
-                    color: AppColors.primaryColor,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500),
-              ),
-              subtitle: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [Text("Every Day"), Text("6:00 AM")],
-              ),
+    return Obx(() {
+      List<Map<String, dynamic>> filteredTodos = [];
+      if (filter == 'all') {
+        filteredTodos = todoController.todos;
+      } else if (filter == 'completed') {
+        filteredTodos = todoController.completedTodos;
+      } else if (filter == 'uncompleted') {
+        filteredTodos = todoController.uncompletedTodos;
+      }
 
-            ),
-          ),
-        ],
-      ),
-    );
+      return todoController.isLoading.value
+          ? const Center(child: CircularProgressIndicator())
+          : filteredTodos.isEmpty
+              ? const Center(child: Text("No To-Dos available", style: TextStyle(fontSize: 16)))
+              : ListView.builder(
+                  itemCount: filteredTodos.length,
+                  itemBuilder: (context, index) {
+                    final todo = filteredTodos[index];
+
+                    return Card(
+                      shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                      color: AppColors.lightBlue,
+                      elevation: 0,
+                      child: ListTile(
+                        title: Text(
+                          todo['title'],
+                          style: const TextStyle(
+                            color: AppColors.primaryColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Days: ${todo['recurringDays'].join(", ")}"),
+                            Text("Time: ${todo['time']}"),
+                          ],
+                        ),
+                        leading: Checkbox(
+                          value: todo['completed'],
+                          onChanged: (value) {
+                            todoController.toggleCompleted(todo['_id'], todo['completed']);
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                );
+    });
   }
 }

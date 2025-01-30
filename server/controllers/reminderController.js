@@ -64,8 +64,7 @@ export const deleteReminder = async (req, res) => {
 };
 
 
-// Mark a reminder as a To-do
-// ✅ Toggle the isToDo status
+
 export const toggleToDo = async (req, res) => {
     try {
       // Find the current reminder
@@ -89,20 +88,33 @@ export const toggleToDo = async (req, res) => {
   };
   
 
+  export const getToDos = async (req, res) => {
+    try {
+        const todos = await Reminder.find({ isToDo: true });
+        res.status(200).json(todos);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+};
+
+
+
 
 // Mark a To-do as completed
 export const markAsCompleted = async (req, res) => {
     try {
-        const reminder = await Reminder.findOneAndUpdate(
-            { _id: req.params.id, userId: req.user.id, isToDo: true },
-            { completed: true },
+        const todo = await Reminder.findById(req.params.id);
+        if (!todo) {
+            return res.status(404).json({ error: "To-do not found" });
+        }
+
+        const updatedTodo = await Reminder.findByIdAndUpdate(
+            req.params.id,
+            { completed: !todo.completed },
             { new: true }
         );
 
-        if (!reminder) { 
-            return res.status(404).json({ error: 'To-do not found' });
-        }
-        res.status(200).json(reminder);
+        res.status(200).json(updatedTodo);
     } catch (err) {
         res.status(400).json({ error: err.message });
     }

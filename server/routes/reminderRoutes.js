@@ -7,6 +7,7 @@ import {
     deleteReminder,
     toggleToDo,
     markAsCompleted,
+    getToDos
 } from '../controllers/reminderController.js';
 
 const router = express.Router();
@@ -14,9 +15,10 @@ const router = express.Router();
 // Routes
 router.post('/add', createReminder); 
 router.get('/getreminders', getReminders); 
-router.put('/update/:id', updateReminder); 
+router.put('/update/:id',authMiddleware, updateReminder); 
 router.delete('/delete/:id', deleteReminder); 
-router.put('/toggle-todo/:id',  toggleToDo); 
-router.put('/:id/mark-completed', authMiddleware, markAsCompleted);
+router.put('/toggle-todo/:id',authMiddleware, toggleToDo); 
+router.get("/get-todos", authMiddleware, getToDos);
+router.put('/toggle-complete/:id', markAsCompleted);
 
 export default router;
