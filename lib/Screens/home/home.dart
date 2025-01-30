@@ -49,7 +49,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 ),
               ),
               child: Padding(
-                padding: EdgeInsets.only(left: 15),
+                padding: const EdgeInsets.only(left: 15),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,

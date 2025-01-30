@@ -151,7 +151,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                         ),
                         TextButton(
                             onPressed: () {
-                              Get.off(SignUp());
+                              Get.off(const SignUp());
                             },
                             child: const Text(
                               "Sign Up",

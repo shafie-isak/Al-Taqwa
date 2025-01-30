@@ -1,4 +1,5 @@
 import 'package:al_taqwa/Screens/auth/signin.dart';
+import 'package:al_taqwa/Screens/duas/dua_collection.dart';
 import 'package:al_taqwa/Screens/home/drawer.dart';
 import 'package:al_taqwa/Screens/reminders/Alarms.dart';
 import 'package:al_taqwa/Screens/reminders/todo.dart';
@@ -16,7 +17,7 @@ void main() {
     debugShowCheckedModeBanner: false,
     initialRoute: '/login',
     getPages: [
-      GetPage(name: '/login', page: () => LogIn()),
+      GetPage(name: '/login', page: () => const LogIn()),
     ],
   ));
 }
@@ -36,7 +37,7 @@ class _AlTaqwaState extends State<AlTaqwa> {
     Alarms(),
     const ToDo(),
     TasbihCounter(),
-    // const Prayers()
+    const DuaCollection()
   ];
 
   @override

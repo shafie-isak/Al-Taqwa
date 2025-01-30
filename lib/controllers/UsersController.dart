@@ -1,11 +1,9 @@
 import 'dart:convert';
 
 import 'package:al_taqwa/Screens/auth/signin.dart';
-import 'package:al_taqwa/Screens/home/home.dart';
 import 'package:al_taqwa/main.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class UsersController extends GetxController {

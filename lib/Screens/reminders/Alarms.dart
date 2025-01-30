@@ -96,23 +96,23 @@ class Alarms extends StatelessWidget {
                             ],
                           ),
                         ),
-                        PopupMenuItem(
+                        const PopupMenuItem(
                           value: 2,
                           child: Row(
                             children: [
-                              const Icon(Icons.edit, color: Colors.black),
-                              const SizedBox(width: 10),
-                              const Text("Edit"),
+                              Icon(Icons.edit, color: Colors.black),
+                              SizedBox(width: 10),
+                              Text("Edit"),
                             ],
                           ),
                         ),
-                        PopupMenuItem(
+                        const PopupMenuItem(
                           value: 3,
                           child: Row(
                             children: [
-                              const Icon(Icons.delete, color: Colors.red),
-                              const SizedBox(width: 10),
-                              const Text("Delete"),
+                              Icon(Icons.delete, color: Colors.red),
+                              SizedBox(width: 10),
+                              Text("Delete"),
                             ],
                           ),
                         ),
@@ -121,7 +121,7 @@ class Alarms extends StatelessWidget {
                     ),
                   ),
                 );
-              }).toList(),
+              }),
             ],
           ),
         ),
