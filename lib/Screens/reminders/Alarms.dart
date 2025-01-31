@@ -60,17 +60,12 @@ class Alarms extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Days: ${alarm['recurringDays'].join(", ")}"),
-                        Text("Time: ${alarm['time']}"),
-                      ],
-                    ),
+                    subtitle: Text("Time: ${_formatTime(alarm['time'])}"),
                     trailing: PopupMenuButton<int>(
                       onSelected: (value) {
                         if (value == 1) {
-                          _reminderController.toggleToDoStatus(alarm['_id'], alarm['isToDo']);
+                          _reminderController.toggleToDoStatus(
+                              alarm['_id'], alarm['isToDo']);
                         }
                         if (value == 2) {
                           _showSetReminderBottomSheet(context, alarm: alarm);
@@ -88,11 +83,17 @@ class Alarms extends StatelessWidget {
                           child: Row(
                             children: [
                               Icon(
-                                alarm['isToDo'] ? Icons.remove_circle_outline : Icons.check_circle_outline,
-                                color: alarm['isToDo'] ? Colors.red : Colors.orange,
+                                alarm['isToDo']
+                                    ? Icons.remove_circle_outline
+                                    : Icons.check_circle_outline,
+                                color: alarm['isToDo']
+                                    ? Colors.red
+                                    : Colors.orange,
                               ),
                               const SizedBox(width: 10),
-                              Text(alarm['isToDo'] ? "Remove To-do" : "Set as To-do"),
+                              Text(alarm['isToDo']
+                                  ? "Remove To-do"
+                                  : "Set as To-do"),
                             ],
                           ),
                         ),
@@ -129,23 +130,15 @@ class Alarms extends StatelessWidget {
     });
   }
 
-  void _showSetReminderBottomSheet(BuildContext context, {Map<String, dynamic>? alarm}) async {
-    List<bool> initialDays = List.filled(7, false);
-    TimeOfDay initialTime = const TimeOfDay(hour: 5, minute: 0);
+  void _showSetReminderBottomSheet(BuildContext context,
+      {Map<String, dynamic>? alarm}) async {
+    TimeOfDay initialTime = TimeOfDay(hour: 5, minute: 0);
     String initialTitle = "";
 
     if (alarm != null) {
       initialTitle = alarm['title'];
-      initialTime = _parseTime(alarm['time']);
-
-      List<String> alarmDays = List<String>.from(alarm['recurringDays']);
-      List<String> dayNames = ['Sat', 'Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri'];
-
-      for (int i = 0; i < dayNames.length; i++) {
-        if (alarmDays.contains(dayNames[i])) {
-          initialDays[i] = true;
-        }
-      }
+      initialTime =
+          _parseTime(alarm['time']); // ✅ Convert stored time to TimeOfDay
     }
 
     final result = await showModalBottomSheet(
@@ -156,14 +149,12 @@ class Alarms extends StatelessWidget {
       ),
       builder: (context) => SetReminderBottomSheet(
         initialTime: initialTime,
-        initialDays: initialDays,
         initialTitle: initialTitle,
       ),
     );
 
     if (result != null) {
       String title = result['title']?.trim() ?? '';
-      List<bool> days = result['days'] ?? List.filled(7, false);
       TimeOfDay time = result['time'] ?? TimeOfDay.now();
 
       if (title.isEmpty) {
@@ -174,21 +165,39 @@ class Alarms extends StatelessWidget {
       }
 
       if (alarm != null) {
-        _reminderController.updateAlarm(alarm['_id'], title, days, time);
+        _reminderController.updateAlarm(alarm['_id'], title, time);
       } else {
-        _reminderController.sendReminderData(title, days, time);
+        _reminderController.sendReminderData(title, time);
       }
     }
   }
 
-  TimeOfDay _parseTime(String timeString) {
-    final parts = timeString.split(" ");
-    final timeParts = parts[0].split(":").map(int.parse).toList();
-    final isPM = parts[1] == "PM";
+  String _formatTime(String timeString) {
+    if (timeString == null || timeString.isEmpty) return "Not Set";
 
-    return TimeOfDay(
-      hour: isPM && timeParts[0] != 12 ? timeParts[0] + 12 : timeParts[0] % 12,
-      minute: timeParts[1],
-    );
+    try {
+      DateTime parsedTime = DateTime.parse(timeString).toLocal();
+
+      // Convert to 12-hour format manually
+      int hour = parsedTime.hour > 12 ? parsedTime.hour - 12 : parsedTime.hour;
+      hour = hour == 0 ? 12 : hour; // Handle midnight case (0 -> 12 AM)
+      String period = parsedTime.hour >= 12 ? "PM" : "AM";
+
+      String formattedTime =
+          "$hour:${parsedTime.minute.toString().padLeft(2, '0')} $period";
+      return formattedTime;
+    } catch (e) {
+      return "Invalid Time";
+    }
   }
+
+  TimeOfDay _parseTime(String timeString) {
+  try {
+    DateTime parsedTime = DateTime.parse(timeString).toLocal();
+    return TimeOfDay(hour: parsedTime.hour, minute: parsedTime.minute);
+  } catch (e) {
+    return TimeOfDay(hour: 0, minute: 0); // Default fallback
+  }
+}
+
 }

@@ -4,6 +4,7 @@ import 'package:al_taqwa/Screens/home/drawer.dart';
 import 'package:al_taqwa/Screens/reminders/Alarms.dart';
 import 'package:al_taqwa/Screens/reminders/todo.dart';
 import 'package:al_taqwa/Screens/tasbih/tasbih.dart';
+import 'package:al_taqwa/services/notification_service.dartnotification_service.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:al_taqwa/Screens/home/home.dart';
@@ -11,8 +12,23 @@ import 'package:al_taqwa/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:solar_icons/solar_icons.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:workmanager/workmanager.dart';
 
-void main() {
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await NotificationService.init();
+
+  tz.initializeTimeZones();
+
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
     initialRoute: '/login',

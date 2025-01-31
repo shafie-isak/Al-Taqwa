@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 
 class SetReminderBottomSheet extends StatefulWidget {
   final TimeOfDay initialTime;
-  final List<bool> initialDays;
-  final String initialTitle; // ✅ Accept title when editing
+  final String initialTitle;
 
   const SetReminderBottomSheet({
     super.key,
     required this.initialTime,
-    required this.initialDays,
     required this.initialTitle,
   });
 
@@ -18,21 +16,19 @@ class SetReminderBottomSheet extends StatefulWidget {
 }
 
 class _SetReminderBottomSheetState extends State<SetReminderBottomSheet> {
-  late List<bool> selectedDays;
   late TimeOfDay selectedTime;
-  late TextEditingController _titleController; // ✅ Declare without initialization
+  late TextEditingController _titleController;
 
   @override
   void initState() {
-    _titleController = TextEditingController(text: widget.initialTitle); // ✅ Initialize correctly
-    selectedDays = widget.initialDays;
+    _titleController = TextEditingController(text: widget.initialTitle);
     selectedTime = widget.initialTime;
-    super.initState(); // ✅ Move this AFTER initializing controllers
+    super.initState();
   }
 
   @override
   void dispose() {
-    _titleController.dispose(); // ✅ Avoid memory leak
+    _titleController.dispose();
     super.dispose();
   }
 
@@ -50,8 +46,6 @@ class _SetReminderBottomSheetState extends State<SetReminderBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> days = ['Sat', 'Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri'];
-
     return Padding(
       padding: EdgeInsets.only(
         left: 16,
@@ -86,42 +80,12 @@ class _SetReminderBottomSheetState extends State<SetReminderBottomSheet> {
             ),
           ),
           const SizedBox(height: 16),
-
-          /// ✅ Fixed TextField to use Controller
           TextField(
-            controller: _titleController, // ✅ Now stores user input
+            controller: _titleController,
             decoration: const InputDecoration(
               labelText: 'Title',
               border: OutlineInputBorder(),
             ),
-          ),
-
-          const SizedBox(height: 16),
-          const Text(
-            'Select Days:',
-            style: TextStyle(fontSize: 16),
-          ),
-          const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            children: List.generate(days.length, (index) {
-              return ChoiceChip(
-                label: Text(days[index]),
-                selected: selectedDays[index],
-                onSelected: (bool selected) {
-                  setState(() {
-                    selectedDays[index] = selected;
-                  });
-                },
-                selectedColor: AppColors.secondaryColor,
-                backgroundColor: Colors.grey[200],
-                labelStyle: TextStyle(
-                  color: selectedDays[index]
-                      ? AppColors.white
-                      : AppColors.primaryColor,
-                ),
-              );
-            }),
           ),
           const SizedBox(height: 16),
           const Text(
@@ -181,18 +145,14 @@ class _SetReminderBottomSheetState extends State<SetReminderBottomSheet> {
                   ),
                   onPressed: () {
                     if (_titleController.text.trim().isEmpty) {
-                      // ✅ Prevent empty titles
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Title cannot be empty')),
                       );
                       return;
                     }
 
-                    print("Returning title: ${_titleController.text}"); // Debugging
-
                     Navigator.pop(context, {
-                      'title': _titleController.text.trim(), // ✅ Now returns entered title
-                      'days': selectedDays,
+                      'title': _titleController.text.trim(),
                       'time': selectedTime,
                     });
                   },
