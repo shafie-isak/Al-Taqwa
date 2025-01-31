@@ -1,7 +1,8 @@
+import 'package:al_taqwa/controllers/reminder_controller.dart';
 import 'package:al_taqwa/Screens/reminders/all_todos.dart';
 import 'package:al_taqwa/colors.dart';
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
 
 class ToDo extends StatefulWidget {
   const ToDo({super.key});
@@ -11,18 +12,12 @@ class ToDo extends StatefulWidget {
 }
 
 class _ToDoState extends State<ToDo> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+  final ReminderController _reminderController = Get.put(ReminderController());
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
+    _reminderController.fetchToDos(); 
   }
 
   @override
@@ -45,9 +40,9 @@ class _ToDoState extends State<ToDo> with SingleTickerProviderStateMixin {
           const Expanded(
             child: TabBarView(
               children: [
-                AllTodo(),
-                AllTodo(),
-                AllTodo(),
+                AllTodo(filterType: "all"), 
+                AllTodo(filterType: "completed"),  
+                AllTodo(filterType: "uncompleted") 
               ],
             ),
           ),

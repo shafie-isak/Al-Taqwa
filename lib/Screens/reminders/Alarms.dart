@@ -138,7 +138,7 @@ class Alarms extends StatelessWidget {
     if (alarm != null) {
       initialTitle = alarm['title'];
       initialTime =
-          _parseTime(alarm['time']); // ✅ Convert stored time to TimeOfDay
+          _parseTime(alarm['time']); 
     }
 
     final result = await showModalBottomSheet(
@@ -178,9 +178,8 @@ class Alarms extends StatelessWidget {
     try {
       DateTime parsedTime = DateTime.parse(timeString).toLocal();
 
-      // Convert to 12-hour format manually
       int hour = parsedTime.hour > 12 ? parsedTime.hour - 12 : parsedTime.hour;
-      hour = hour == 0 ? 12 : hour; // Handle midnight case (0 -> 12 AM)
+      hour = hour == 0 ? 12 : hour;
       String period = parsedTime.hour >= 12 ? "PM" : "AM";
 
       String formattedTime =
@@ -192,12 +191,11 @@ class Alarms extends StatelessWidget {
   }
 
   TimeOfDay _parseTime(String timeString) {
-  try {
-    DateTime parsedTime = DateTime.parse(timeString).toLocal();
-    return TimeOfDay(hour: parsedTime.hour, minute: parsedTime.minute);
-  } catch (e) {
-    return const TimeOfDay(hour: 0, minute: 0); // Default fallback
+    try {
+      DateTime parsedTime = DateTime.parse(timeString).toLocal();
+      return TimeOfDay(hour: parsedTime.hour, minute: parsedTime.minute);
+    } catch (e) {
+      return const TimeOfDay(hour: 0, minute: 0);
+    }
   }
-}
-
 }

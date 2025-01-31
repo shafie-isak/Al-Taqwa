@@ -8,6 +8,7 @@ import 'dart:convert';
 class ReminderController extends GetxController {
   var isLoading = true.obs;
   var alarms = <Map<String, dynamic>>[].obs;
+  var todos = <Map<String, dynamic>>[].obs;
 
   final UsersController _usersController = Get.find<UsersController>();
 
@@ -15,6 +16,7 @@ class ReminderController extends GetxController {
   void onInit() {
     super.onInit();
     fetchAlarms();
+    fetchToDos();
   }
 
   Future<void> fetchAlarms() async {
@@ -206,5 +208,46 @@ class ReminderController extends GetxController {
       print("Error updating to-do status: $e");
     }
   }
+
+  Future<void> fetchToDos() async {
+    const String apiUrl = "http://10.0.2.2:5000/api/reminders/get-todos";
+
+    try {
+      final response = await http.get(
+        Uri.parse(apiUrl),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization':
+              'Bearer ${_usersController.token.value}', 
+        },
+      );
+      if (response.statusCode == 200) {
+        todos.value = List<Map<String, dynamic>>.from(jsonDecode(response.body));
+      }
+    } catch (e) {
+      print("Error fetching todos: $e");
+    }
+  }
+
+   Future<void> toggleCompleted(String id, bool isCompleted) async {
+    const String apiUrl = "http://10.0.2.2:5000/api/reminders/toggle-completed";
+    try {
+      final response = await http.put(
+        Uri.parse("$apiUrl/$id"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization':
+              'Bearer ${_usersController.token.value}', 
+        },
+        body: jsonEncode({'isCompleted': !isCompleted}),
+      );
+      if (response.statusCode == 200) {
+        fetchToDos();
+      }
+    } catch (e) {
+      print("Error toggling completion status: $e");
+    }
+  }
+
 
 }
