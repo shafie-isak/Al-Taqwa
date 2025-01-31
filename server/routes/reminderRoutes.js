@@ -6,8 +6,8 @@ import {
     updateReminder,
     deleteReminder,
     toggleToDo,
-    markAsCompleted,
-    getToDos
+    getToDos,
+    toggleCompleted
 } from '../controllers/reminderController.js';
 
 const router = express.Router();
@@ -18,6 +18,7 @@ router.get('/getreminders', authMiddleware ,getReminders);
 router.put('/update/:id', authMiddleware ,updateReminder); 
 router.delete('/delete/:id', authMiddleware ,deleteReminder); 
 router.put('/toggle-todo/:id', authMiddleware , toggleToDo); 
-router.put('/:id/mark-completed', authMiddleware, markAsCompleted);
+router.get('/get-todos', authMiddleware , getToDos); 
+router.put('/toggle-completed/:id', authMiddleware , toggleCompleted); 
 
 export default router;

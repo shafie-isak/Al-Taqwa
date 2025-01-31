@@ -4,7 +4,7 @@ const ReminderSchema = new mongoose.Schema({
     title: { type: String, required: true },
     time: { type: Date, required: true },
     isToDo: { type: Boolean, default: false },
-    completed: { type: Boolean, default: false },
+    isCompleted: { type: Boolean, default: false },
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Add userId
 });
 

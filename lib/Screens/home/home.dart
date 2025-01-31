@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:al_taqwa/colors.dart';
 import 'package:al_taqwa/controllers/UsersController.dart';
-import 'package:al_taqwa/services/notification_service.dartnotification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skeletonizer/skeletonizer.dart';

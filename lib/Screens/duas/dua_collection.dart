@@ -2,8 +2,6 @@ import 'package:al_taqwa/colors.dart';
 import 'package:flutter/material.dart';
 
 
-import 'package:al_taqwa/colors.dart';
-import 'package:flutter/material.dart';
 
 class DuaCollection extends StatefulWidget {
   const DuaCollection({super.key});

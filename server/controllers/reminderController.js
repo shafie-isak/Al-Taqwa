@@ -7,7 +7,7 @@ export const createReminder = async (req, res) => {
         console.log("Incoming data: ", req.body);
         const { title, recurringDays, time } = req.body;
         if (!title || !time) {
-            return res.status(400).json({error: 'Title and time required'});
+            return res.status(400).json({ error: 'Title and time required' });
         }
 
         const reminder = new Reminder({
@@ -66,54 +66,67 @@ export const deleteReminder = async (req, res) => {
 
 export const toggleToDo = async (req, res) => {
     try {
-      // Find the current reminder
-      const reminder = await Reminder.findById(req.params.id);
-      
-      if (!reminder) {
-        return res.status(404).json({ error: "Reminder not found" });
-      }
-  
-      // Toggle the isToDo status
-      const updatedReminder = await Reminder.findByIdAndUpdate(
-        req.params.id,
-        { isToDo: !reminder.isToDo }, 
-        { new: true }
-      );
-  
-      res.status(200).json(updatedReminder);
-    } catch (err) {
-      res.status(400).json({ error: err.message });
-    }
-  };
-  
+        // Find the current reminder
+        const reminder = await Reminder.findById(req.params.id);
 
-  export const getToDos = async (req, res) => {
-    try {
-        const todos = await Reminder.find({ isToDo: true });
-        res.status(200).json(todos);
+        if (!reminder) {
+            return res.status(404).json({ error: "Reminder not found" });
+        }
+
+        // Toggle the isToDo status
+        const updatedReminder = await Reminder.findByIdAndUpdate(
+            req.params.id,
+            { isToDo: !reminder.isToDo },
+            { new: true }
+        );
+
+        res.status(200).json(updatedReminder);
     } catch (err) {
-      res.status(400).json({ error: err.message });
+        res.status(400).json({ error: err.message });
     }
 };
 
 
+export const getToDos = async (req, res) => {
+    try {
+        const todos = await Reminder.find({ isToDo: true, userId: req.user.id });
+        res.status(200).json(todos);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+};
 
 
-// Mark a To-do as completed
-export const markAsCompleted = async (req, res) => {
+export const getCompletedToDos = async (req, res) => {
+    try {
+        const completedTodos = await Reminder.find({ isToDo: true, isCompleted: true, userId: req.user.id });
+        res.status(200).json(completedTodos);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+};
+
+
+export const getUnCompletedToDos = async (req, res) => {
+    try {
+        const uncompletedTodos = await Reminder.find({ isToDo: true, isCompleted: false, userId: req.user.id });
+        res.status(200).json(uncompletedTodos);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+};
+
+
+export const toggleCompleted = async (req, res) => {
     try {
         const todo = await Reminder.findById(req.params.id);
         if (!todo) {
             return res.status(404).json({ error: "To-do not found" });
         }
 
-        const updatedTodo = await Reminder.findByIdAndUpdate(
-            req.params.id,
-            { completed: !todo.completed },
-            { new: true }
-        );
-
-        res.status(200).json(updatedTodo);
+        todo.isCompleted = !todo.isCompleted; 
+        await todo.save();
+        res.status(200).json(todo);
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
