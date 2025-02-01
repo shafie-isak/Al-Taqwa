@@ -51,7 +51,7 @@ class _AlTaqwaState extends State<AlTaqwa> {
     Alarms(),
     const ToDo(),
     TasbihCounter(),
-    const DuaCollection()
+     DuaCollection()
   ];
 
   @override

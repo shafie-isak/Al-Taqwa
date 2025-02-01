@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:al_taqwa/Screens/auth/signin.dart';
 import 'package:al_taqwa/main.dart';
@@ -78,8 +80,14 @@ class UsersController extends GetxController {
         Get.snackbar('Error', 'Login Failed! 😟',
             snackPosition: SnackPosition.TOP);
       }
+    } on SocketException catch (e) {
+      Get.snackbar('Erorr', 'Connection error: $e', snackPosition: SnackPosition.TOP);
+    } on TimeoutException catch (e) {
+      Get.snackbar('Erorr', 'Connection error: $e', snackPosition: SnackPosition.TOP);
     } catch (e) {
       Get.snackbar('Erorr', 'Erorr: $e', snackPosition: SnackPosition.TOP);
+    } finally {
+      isloading.value = false;
     }
   }
 
@@ -144,8 +152,14 @@ class UsersController extends GetxController {
 
         print("failde");
       }
+    } on SocketException catch (e) {
+      Get.snackbar('Erorr', 'Connection error: $e', snackPosition: SnackPosition.TOP);
+    } on TimeoutException catch (e) {
+      Get.snackbar('Erorr', 'Connection error: $e', snackPosition: SnackPosition.TOP);
     } catch (e) {
       Get.snackbar('Erorr', 'Erorr: $e', snackPosition: SnackPosition.TOP);
+    } finally {
+      isloading.value = false;
     }
   }
 
