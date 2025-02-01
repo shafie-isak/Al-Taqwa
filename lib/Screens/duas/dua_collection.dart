@@ -1,5 +1,7 @@
+import 'package:al_taqwa/Screens/duas/read_dua.dart';
 import 'package:al_taqwa/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 
 
@@ -25,7 +27,7 @@ class _DuaCollectionState extends State<DuaCollection> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              // Handle tap
+              Get.to(ReadDua());
             },
             child: Container(
               height: 200,
